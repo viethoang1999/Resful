@@ -13,38 +13,41 @@ public class StudentDao {
     Logger logger = Logger.getLogger(String.valueOf(StudentDao.class));
 
     public List<Student> getAll() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
             return session.createQuery("from Student ").list();
 
         } catch (HibernateException e) {
-            e.fillInStackTrace();
+            System.out.println(e);
+            session.getTransaction().rollback();
 //            logger.err(e);
         }
         return null;
     }
 
     public Student findById(int id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
             Query<Student> query = session.createQuery("select  s from Student s where  s.id= :p_student_id");
             query.setParameter("p_student_id", id);
             return query.getSingleResult();
         } catch (HibernateException e) {
-            e.fillInStackTrace();
+            System.out.println(e);
+            session.getTransaction().rollback();
         }
         return null;
     }
 
     public boolean insert(Student student) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(student);
             session.getTransaction().commit();
             return true;
         } catch (HibernateException e) {
-            e.fillInStackTrace();
+            System.out.println(e);
+            session.getTransaction().rollback();
         }
         return false;
     }
@@ -74,7 +77,8 @@ public class StudentDao {
             session.getTransaction().commit();
             return true;
         } catch (HibernateException e) {
-            e.fillInStackTrace();
+            System.out.println(e);
+            session.getTransaction().rollback();
         }
         return false;
     }

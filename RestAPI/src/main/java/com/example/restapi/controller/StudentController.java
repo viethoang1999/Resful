@@ -1,5 +1,6 @@
 package com.example.restapi.controller;
 
+import com.example.restapi.dto.StudentDTO;
 import com.example.restapi.entity.Student;
 import com.example.restapi.service.StudentService;
 
@@ -30,8 +31,8 @@ public class StudentController {
     @Path("/insert")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String addNewStudent(Student student) {
-        return studentService.insert(student) ? "Them moi thanh cong" : "Cap nhat that bai";
+    public String addNewStudent(StudentDTO studentDTO) {
+        return studentService.insert(studentDTO) ? "Them moi thanh cong" : "Cap nhat that bai";
     }
 
     @PUT
