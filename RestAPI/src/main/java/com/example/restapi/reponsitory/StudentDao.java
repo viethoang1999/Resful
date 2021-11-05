@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -81,6 +82,111 @@ public class StudentDao {
             session.getTransaction().rollback();
         }
         return false;
+    }
+
+    public List<Student> happyBirthDay() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            LocalDate day = LocalDate.now();
+            int month = day.getMonthValue();
+            int day1 = day.getDayOfMonth();
+            Query<Student> query = session.createQuery("from  Student where  to_number(to_char(birthday,'MM'))=:p_month and to_number(to_char(birthday,'dd'))=:p_day");
+            query.setParameter("p_month", month);
+            query.setParameter("p_day", day1);
+            List<Student> students = query.getResultList();
+            session.getTransaction().commit();
+            return students;
+        } catch (Exception e) {
+            System.out.println(e);
+            session.getTransaction().rollback();
+        }
+        return null;
+    }
+
+    public List<Student> searchName(String name) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query<Student> query = session.createQuery(" from Student where lower(fullname)like lower(to_char(concat(concat('%',:p_student_name),'%' ))) ");
+            query.setParameter("p_student_name", name);
+            List<Student> students = query.getResultList();
+            session.getTransaction().commit();
+            return students;
+        } catch (HibernateException e) {
+            System.out.println(e);
+        } finally {
+            session.close();
+        }
+        return null;
+    }
+
+    public List<Student> searchMajor(String major) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query<Student> query = session.createQuery(" from Student where lower(major)like lower(to_char(concat(concat('%',:p_student_major),'%' ))) ");
+            query.setParameter("p_student_major", major);
+            List<Student> students = query.getResultList();
+            session.getTransaction().commit();
+            return students;
+        } catch (HibernateException e) {
+            System.out.println(e);
+        } finally {
+            session.close();
+        }
+        return null;
+    }
+
+    public List<Student> searchGender(String gender) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query<Student> query = session.createQuery(" from Student where lower(gender)like lower(to_char(concat(concat('%',:p_student_gender),'%' ))) ");
+            query.setParameter("p_student_gender", gender);
+            List<Student> students = query.getResultList();
+            session.getTransaction().commit();
+            return students;
+        } catch (HibernateException e) {
+            System.out.println(e);
+        } finally {
+            session.close();
+        }
+        return null;
+    }
+
+    public List<Student> searchHometown(String hometown) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query<Student> query = session.createQuery(" from Student where lower(hometown)like lower(to_char(concat(concat('%',:p_student_hometown),'%' ))) ");
+            query.setParameter("p_student_hometown", hometown);
+            List<Student> students = query.getResultList();
+            session.getTransaction().commit();
+            return students;
+        } catch (HibernateException e) {
+            System.out.println(e);
+        } finally {
+            session.close();
+        }
+        return null;
+    }
+
+    public List<Student> searchClassName(String className) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query<Student> query = session.createQuery(" from Student where lower(classname)like lower(to_char(concat(concat('%',:p_student_className),'%' ))) ");
+            query.setParameter("p_student_className", className);
+            List<Student> students = query.getResultList();
+            session.getTransaction().commit();
+            return students;
+        } catch (HibernateException e) {
+            System.out.println(e);
+        } finally {
+            session.close();
+        }
+        return null;
     }
 
 }

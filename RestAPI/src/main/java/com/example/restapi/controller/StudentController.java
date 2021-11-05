@@ -6,6 +6,7 @@ import com.example.restapi.service.StudentService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.awt.*;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class StudentController {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public List<Student> getListStudent() {
         return studentService.getListStudent();
     }
@@ -23,6 +25,7 @@ public class StudentController {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Student getStudent(@PathParam("id") int id) {
         return studentService.finID(id);
     }
@@ -38,15 +41,26 @@ public class StudentController {
     @PUT
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public String updateStudent(Student student) {
-        return studentService.update(student) ? "Sua thanh cong" : "Sua That bai";
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String updateStudent(StudentDTO studentDTO) {
+        return studentService.update(studentDTO) ? "Sua thanh cong" : "Sua That bai";
     }
 
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public String deleteStudent(@PathParam("id") int id) {
         return studentService.removeStudent(id) ? "Xoa thanh cong" : "Xoa that bai";
 
     }
+
+    @GET
+    @Path("/birthDay")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<Student> getBirthDay() {
+        return studentService.getListStudentBirthday();
+    }
+
 }

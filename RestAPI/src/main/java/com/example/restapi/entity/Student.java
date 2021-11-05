@@ -1,5 +1,6 @@
 package com.example.restapi.entity;
 
+import com.example.restapi.dto.StudentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,4 +36,6 @@ public class Student implements Serializable {
     private String gender;
     @Column(name = "average_mark", nullable = false)
     private double average_mark;
+
+
 }

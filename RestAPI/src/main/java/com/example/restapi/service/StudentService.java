@@ -42,6 +42,30 @@ public class StudentService {
 //        if (student.getFullname() == null) {
 //            return false;
 //        }
+        if (student.getId() <= 0) {
+            return false;
+        }
+        if (student.getFullname() == null) {
+            return false;
+        }
+        if (student.getBirthday() == null) {
+            return false;
+        }
+        if (student.getClassname() == null) {
+            return false;
+        }
+        if (student.getMajor() == null) {
+            return false;
+        }
+        if (student.getHometown() == null) {
+            return false;
+        }
+        if (student.getGender() == null) {
+            return false;
+        }
+        if (student.getAverage_mark() < 0) {
+            return false;
+        }
         return studentDao.insert(student);
     }
 
@@ -49,7 +73,20 @@ public class StudentService {
         return studentDao.removeStudent(id);
     }
 
-    public boolean update(Student student) {
+    public boolean update(StudentDTO studentDTO) {
+        Student student = new Student();
+        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+        student.setAverage_mark(studentDTO.getAvergemark());
+        try {
+            student.setBirthday(date.parse(studentDTO.getBirthday()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        student.setGender(studentDTO.getGender());
+        student.setClassname(studentDTO.getClassname());
+        student.setHometown(studentDTO.getHometown());
+        student.setMajor(studentDTO.getMajor());
+        student.setFullname(studentDTO.getFullname());
         if (student.getId() <= 0) {
             return false;
         }
@@ -79,7 +116,7 @@ public class StudentService {
 
     //private StringBuilder mess;
 
-//    public boolean checkInput(Student student) {
+    //    public boolean checkInput(Student student) {
 //        mess = new StringBuilder("Khong the tao sv");
 //        boolean agreed = true;
 //        if (student.getFullname() == null || student.getFullname().isEmpty() || student.getFullname().length() < 1 || student.getFullname().length() > 50) {
@@ -128,4 +165,28 @@ public class StudentService {
 //    public String getMess() {
 //        return mess.toString();
 //    }
+    public List<Student> getListStudentBirthday() {
+        return studentDao.happyBirthDay();
+    }
+
+    public List<Student> getListStudentByName(String name) {
+        return studentDao.searchName(name);
+    }
+
+    public List<Student> getListStudentByMajor(String major) {
+        return studentDao.searchMajor(major);
+    }
+
+    public List<Student> getListStudentByGender(String gender) {
+        return studentDao.searchGender(gender);
+    }
+
+    public List<Student> getListStudentByHometown(String hometown) {
+        return studentDao.searchHometown(hometown);
+    }
+
+    public List<Student> getListStudentByClassName(String className) {
+        return studentDao.searchClassName(className);
+    }
+
 }
